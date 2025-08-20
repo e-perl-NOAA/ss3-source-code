@@ -1,3 +1,4 @@
+#small change for test
 name: Test SS3 Builds with Simple Model
 
 # This workflow will run whenever the 'build-ss3' workflow completes successfully.
@@ -117,6 +118,7 @@ jobs:
         with:
           name: simple-model-output-${{ matrix.os }}
           path: ss3-test-models/models/Simple/
+
 
 
 
