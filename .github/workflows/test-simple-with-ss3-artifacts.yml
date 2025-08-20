@@ -13,17 +13,21 @@ jobs:
   find_build_artifacts:
     runs-on: ubuntu-latest # A general runner to get the run ID
     outputs:
-      run_id: ${{ steps.get_run_id.outputs.run_id }} # Output the run ID for other jobs to use
+      run_id: ${{ steps.get_run_id.outputs.run_id }}
+      parent_workflow_event: ${{ github.event.workflow_run.event }}
     steps:
-      - name: Get workflow_run ID
+      - name: Get workflow_run ID and Parent Event
         id: get_run_id
         run: |
           echo "Run ID of build-ss3 workflow: ${{ github.event.workflow_run.id }}"
           echo "run_id=${{ github.event.workflow_run.id }}" >> "$GITHUB_OUTPUT"
+          echo "Parent workflow event: ${{ github.event.workflow_run.event }}"
+          echo "parent_workflow_event=${{ github.event.workflow_run.event }}" >> "$GITHUB_OUTPUT"
 
   test_builds:
     # This job depends on 'find_build_artifacts' to get the run ID
     needs: find_build_artifacts
+    if: needs.find_build_artifacts.outputs.parent_workflow_event == 'pull_request'
     
     # Define the matrix for different OS and artifact/executable names
     runs-on: ${{ matrix.os }}
@@ -113,6 +117,7 @@ jobs:
         with:
           name: simple-model-output-${{ matrix.os }}
           path: ss3-test-models/models/Simple/
+
 
 
 
