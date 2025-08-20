@@ -88,9 +88,9 @@ jobs:
         run: |
           # Use tar for unzipping on Windows; unzip for Linux/macOS
           if [[ "${{ runner.os }}" == "Windows" ]]; then
-            tar -xf ${{ matrix.artifact_name }}.zip -C ss3-test-models/models/Simple/${{ matrix.exe_dir }}
+            tar -xf ${{ matrix.artifact_name }}.zip -C ss3-test-models/models/Simple
           else
-            unzip ${{ matrix.artifact_name }}.zip -d ss3-test-models/models/Simple/${{ matrix.exe_dir }}
+            unzip ${{ matrix.artifact_name }}.zip -d ss3-test-models/models/Simple
             # Make executables runnable on Linux/macOS
             chmod +x ss3-test-models/models/Simple/${{ matrix.exe }}
           fi
@@ -114,3 +114,4 @@ jobs:
         with:
           name: simple-model-output-${{ matrix.os }}
           path: ss3-test-models/models/Simple/
+
