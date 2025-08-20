@@ -81,11 +81,11 @@ jobs:
             }
 
       - name: Unzip artifact and set permissions
-        shell: bash
+        shell: ${{ runner.os == 'Windows' && 'pwsh' || 'bash' }}
         run: |
           # Use tar for unzipping on Windows; unzip for Linux/macOS
           if [[ "${{ runner.os }}" == "Windows" ]]; then
-            tar -xf ${{ matrix.artifact_name }}.zip -C ss3-test-models/models/Simple
+            Expand-Archive -Path "${{ github.workspace }}\${{ matrix.artifact_name }}.zip" -DestinationPath "ss3-test-models/models/Simple" -Force
           else
             unzip ${{ matrix.artifact_name }}.zip -d ss3-test-models/models/Simple
             # Make executables runnable on Linux/macOS
@@ -111,5 +111,6 @@ jobs:
         with:
           name: simple-model-output-${{ matrix.os }}
           path: ss3-test-models/models/Simple/
+
 
 
