@@ -35,19 +35,15 @@ jobs:
           - os: ubuntu-latest
             artifact_name: ss3-ubuntu-latest
             exe: ss3_linux
-            exe_dir: linux
           - os: macos-13
             artifact_name: ss3-macos-13
             exe: ss3_osx
-            exe_dir: macos-intel
           - os: macos-latest
             artifact_name: ss3-macos-latest
-            exe: ss3_osx_arm64
-            exe_dir: macos-arm64
+            exe: ss3_osx
           - os: windows-latest
             artifact_name: ss3-windows-latest
             exe: ss3_win.exe
-            exe_dir: windows
 
     steps:
       - name: Checkout SS3 Test Models
@@ -85,6 +81,7 @@ jobs:
             }
 
       - name: Unzip artifact and set permissions
+        shell: bash
         run: |
           # Use tar for unzipping on Windows; unzip for Linux/macOS
           if [[ "${{ runner.os }}" == "Windows" ]]; then
@@ -114,4 +111,5 @@ jobs:
         with:
           name: simple-model-output-${{ matrix.os }}
           path: ss3-test-models/models/Simple/
+
 
